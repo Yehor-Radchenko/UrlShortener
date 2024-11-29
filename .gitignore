@@ -336,8 +336,3 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
-
-appsettings.json
-
-/src/Shortener.Presentation/Migrations
-/src/Shortener.Presentation/wwwroot
