@@ -4,9 +4,9 @@ namespace UrlShortener.Common.RequestModels.User;
 
 public class ChangePasswordRequest
 {
-    [Required(ErrorMessage = "User ID is required")]
-    [Range(1, int.MaxValue, ErrorMessage = "User ID must be a positive number")]
-    public int UserId { get; set; }
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
+    public string Email { get; set; }
 
     [Required(ErrorMessage = "Old password is required")]
     [DataType(DataType.Password)]

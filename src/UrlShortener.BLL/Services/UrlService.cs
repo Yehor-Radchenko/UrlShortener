@@ -13,44 +13,44 @@ namespace UrlShortener.BLL.Services;
 public class UrlService(
     IMapper mapper,
     IGenericRepository<Url> urlRepo,
-    IUnitOfWork unitOfWork) : IUrlService
+    IUnitOfWork unitOfWork,
+    UrlCastService urlCastService) : IUrlService
 {
-    public async Task<int> AddAsync(CreateUrlShortenerRequest requestModel, int userId)
+    public async Task<string> AddAsync(CreateUrlShortenerRequest requestModel, int userId)
     {
         ArgumentNullException.ThrowIfNull(requestModel);
 
         var url = mapper.Map<Url>(requestModel);
 
-        url.ShortUrl = await GetUniqueShortUrlPath(urlRepo);
+        url.ShortUrl = await GetUniqueShortUrlPath(urlRepo, userId);
         url.CreatedDate = DateTime.Now;
         url.UserId = userId;
 
         urlRepo.Create(url);
         await unitOfWork.SaveChangesAsync();
 
-        return url.Id;
+        return urlCastService.CastUrl(url.ShortUrl);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, int userId)
     {
-        var url = await urlRepo.GetAsync(url => url.Id == id);
+        var url = await urlRepo.GetAsync(url => url.Id == id && url.UserId == userId);
         urlRepo.Delete(url);
         await unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<UrlViewModel>> GetAllAsync()
+    public async Task<IEnumerable<UrlViewModel>> GetAllAsync(int userId)
     {
-        return mapper.Map<IEnumerable<UrlViewModel>>(await urlRepo.GetAllAsNoTrackingAsync());
+        return mapper.Map<IEnumerable<UrlViewModel>>(await urlRepo.GetAllAsNoTrackingAsync(url => url.UserId == userId));
     }
 
-    public async Task<UrlViewModel> GetByIdAsync(int id)
+    public async Task<UrlViewModel> GetByIdAsync(int id, int userId)
     {
         return mapper.Map<UrlViewModel>(
-            await urlRepo.GetAsNoTrackingAsync(url =>
-            url.Id == id));
+            await urlRepo.GetAsNoTrackingAsync(url => url.Id == id && url.UserId == userId));
     }
 
-    public async Task<UrlViewModel> GetByShortedUrlAsync(string shortedUrl)
+    public async Task<UrlViewModel> GetByShortedUrlAsync(string shortedUrl, int userId)
     {
         return mapper.Map<UrlViewModel>(
             await urlRepo.GetAsNoTrackingAsync(url =>
@@ -83,13 +83,13 @@ public class UrlService(
         await unitOfWork.SaveChangesAsync();
     }
 
-    private static async Task<string> GetUniqueShortUrlPath(IGenericRepository<Url> urlRepo)
+    private static async Task<string> GetUniqueShortUrlPath(IGenericRepository<Url> urlRepo, int userId)
     {
         var generetedUrlPath = "";
         do
         {
             generetedUrlPath = UrlHasher.GenerateShortUrlPath();
-        } while (!await urlRepo.ExistsAsync(url => url.ShortUrl == generetedUrlPath));
+        } while (await urlRepo.ExistsAsync(url => url.ShortUrl == generetedUrlPath && url.UserId == userId));
 
         return generetedUrlPath;
     }

@@ -16,6 +16,9 @@ public static class ServiceCollectionExtention
         services.AddAutoMapper(typeof(MappingProfile));
 
         services.AddScoped<IUrlService, UrlService>();
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<JwtService>();
+        services.AddScoped<UrlCastService>();
         services.ConfigureAuthentication(configuration);
 
         return services;
@@ -32,9 +35,9 @@ public static class ServiceCollectionExtention
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration["shortener_issuer"],
-                    ValidAudience = configuration["shortener_audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["my_secret_key"]!))
+                    ValidIssuer = configuration["JwtSettings:Issuer"],
+                    ValidAudience = configuration["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"]!))
                 };
             });
     }

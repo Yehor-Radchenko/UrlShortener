@@ -25,17 +25,18 @@ public static class ServiceCollectionExtention
         return services;
     }
 
-    private static IServiceCollection ConfigureIdentity(this IServiceCollection services)
+    public static void ConfigureIdentity(this IServiceCollection services)
     {
-        services.Configure<IdentityOptions>(options =>
+        services.AddIdentity<User, IdentityRole<int>>(opts =>
         {
-            options.Password.RequiredLength = 8;
-            options.Password.RequireDigit = true;
-            options.Password.RequireLowercase = true;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-        });
-
-        return services;
+            opts.Password.RequireLowercase = true;
+            opts.Password.RequireUppercase = false;
+            opts.Password.RequireNonAlphanumeric = false;
+            opts.Password.RequireDigit = true;
+            opts.SignIn.RequireConfirmedAccount = false;
+            opts.User.RequireUniqueEmail = true;
+        })
+        .AddEntityFrameworkStores<UrlShortenerDbContext>()
+        .AddDefaultTokenProviders();
     }
 }

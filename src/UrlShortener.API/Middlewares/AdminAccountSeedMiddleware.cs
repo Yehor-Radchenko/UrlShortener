@@ -4,12 +4,12 @@ using UrlShortener.DAL.Entities;
 
 namespace UrlShortener.API.Middlewares;
 
-public class RoleInitializerMiddlwere(
+public class AdminAccountSeedMiddleware(
     UrlShortenerDbContext context,
     UserManager<User> userManager,
     RoleManager<IdentityRole<int>> roleManager,
     IConfiguration configuration,
-    ILogger<RoleInitializerMiddlwere> logger) : IMiddleware
+    ILogger<AdminAccountSeedMiddleware> logger) : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
@@ -34,17 +34,22 @@ public class RoleInitializerMiddlwere(
             await roleManager.CreateAsync(new IdentityRole<int>("Admin"));
         }
 
-        if (await userManager.FindByEmailAsync(configuration["AdminDataSeed:DefaultEmail"]) == null && !context.Users!.Any())
+        if (await roleManager.FindByNameAsync("User") == null)
+        {
+            await roleManager.CreateAsync(new IdentityRole<int>("User"));
+        }
+
+        if (await userManager.FindByEmailAsync(configuration["AdminDataSeed:Email"]) == null && !context.Users!.Any())
         {
             var admin = new User
             {
-                Email = configuration["AdminDataSeed:DefaultEmail"],
-                UserName = configuration["AdminDataSeed:DefaultUsername"],
-                FirstName = configuration["AdminDataSeed:DefaultFirstName"],
-                LastName = configuration["AdminDataSeed:DefaultLastName"]
+                Email = configuration["AdminDataSeed:Email"],
+                UserName = configuration["AdminDataSeed:Username"],
+                FirstName = configuration["AdminDataSeed:FirstName"],
+                LastName = configuration["AdminDataSeed:LastName"]
             };
 
-            var result = await userManager.CreateAsync(admin, configuration["AdminSettings:DefaultPass"]);
+            var result = await userManager.CreateAsync(admin, configuration["AdminDataSeed:Password"]);
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(admin, "Admin");
