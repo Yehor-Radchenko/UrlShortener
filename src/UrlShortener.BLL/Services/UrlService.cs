@@ -14,7 +14,7 @@ public class UrlService(
     IMapper mapper,
     IGenericRepository<Url> urlRepo,
     IUnitOfWork unitOfWork,
-    UrlCastService urlCastService) : IUrlService
+    IUrlCastService urlCastService) : IUrlService
 {
     public async Task<string> AddAsync(CreateUrlShortenerRequest requestModel, int userId)
     {

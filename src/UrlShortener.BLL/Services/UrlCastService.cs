@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
+using UrlShortener.BLL.Interfaces;
 
 namespace UrlShortener.BLL.Services;
 
-public class UrlCastService(IConfiguration configuration)
+public class UrlCastService(IConfiguration configuration) : IUrlCastService
 {
     public string CastUrl(string shortUrlPath)
     {

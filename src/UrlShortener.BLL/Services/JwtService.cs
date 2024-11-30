@@ -4,10 +4,11 @@ using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using UrlShortener.BLL.Interfaces;
 
 namespace UrlShortener.BLL.Services;
 
-public class JwtService(IConfiguration configuration)
+public class JwtService(IConfiguration configuration) : IJwtService
 {
     private readonly string _secretKey = configuration["JwtSettings:SecretKey"]!;
     private readonly string _issuer = configuration["JwtSettings:Issuer"]!;
