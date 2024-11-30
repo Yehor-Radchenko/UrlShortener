@@ -18,17 +18,4 @@ public class UrlShortenerDbContext : IdentityDbContext<User, IdentityRole<int>, 
     public override DbSet<User> Users { get; set; }
 
     public DbSet<Url> URLs { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-
-        builder.Entity<Url>()
-            .HasIndex(url => url.FullUrl)
-            .IsUnique();
-
-        builder.Entity<Url>()
-            .HasIndex(url => url.ShortUrl)
-            .IsUnique();
-    }
 }

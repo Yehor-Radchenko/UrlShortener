@@ -10,7 +10,7 @@ public class UrlViewModel
 
     public DateTime CreatedDate { get; set; }
 
-    public DateTime LastAppeal { get; set; }
+    public DateTime? LastAppeal { get; set; } = null!;
 
     public int NumberOfAppeals { get; set; }
 

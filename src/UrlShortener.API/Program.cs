@@ -55,6 +55,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<GlobalExceptionHandler>();
+
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();

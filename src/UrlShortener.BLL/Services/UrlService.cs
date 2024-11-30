@@ -41,13 +41,28 @@ public class UrlService(
 
     public async Task<IEnumerable<UrlViewModel>> GetAllAsync(int userId)
     {
-        return mapper.Map<IEnumerable<UrlViewModel>>(await urlRepo.GetAllAsNoTrackingAsync(url => url.UserId == userId));
+        var urls = await urlRepo.GetAllAsNoTrackingAsync(url => url.UserId == userId);
+        var viewModels = mapper.Map<IEnumerable<UrlViewModel>>(urls);
+
+        foreach (var vm in viewModels)
+        {
+            vm.ShortUrl = urlCastService.CastUrl(vm.ShortUrl);
+        }
+
+        return viewModels;
     }
 
     public async Task<UrlViewModel> GetByIdAsync(int id, int userId)
     {
-        return mapper.Map<UrlViewModel>(
-            await urlRepo.GetAsNoTrackingAsync(url => url.Id == id && url.UserId == userId));
+        var url = await urlRepo.GetAsNoTrackingAsync(url => url.Id == id && url.UserId == userId);
+        var viewModel = mapper.Map<UrlViewModel>(url);
+
+        if (viewModel != null)
+        {
+            viewModel.ShortUrl = urlCastService.CastUrl(viewModel.ShortUrl);
+        }
+
+        return viewModel;
     }
 
     public async Task<UrlViewModel> GetByShortedUrlAsync(string shortedUrl, int userId)

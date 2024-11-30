@@ -15,5 +15,7 @@ public interface IUrlService
 
     Task UpdateAsync(UpdateUrlShortenerRequest requestModel, int userId);
 
+    Task UpdateUrlAppealData(int urlId);
+
     Task DeleteAsync(int id, int userId);
 }

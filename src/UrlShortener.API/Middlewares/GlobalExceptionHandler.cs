@@ -26,6 +26,7 @@ public class GlobalExceptionHandler(RequestDelegate next)
         {
             ArgumentNullException or InvalidOperationException => (int)HttpStatusCode.BadRequest,
             UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+            AuthenticationFailedException => (int)HttpStatusCode.Unauthorized,
             EntityNotFoundException => (int)HttpStatusCode.NotFound,
             ConflictException => (int)HttpStatusCode.Conflict,
             DbUpdateException => (int)HttpStatusCode.InternalServerError,

@@ -6,8 +6,8 @@ public class UrlCastService(IConfiguration configuration)
 {
     public string CastUrl(string shortUrlPath)
     {
-        string domain = configuration["domain"]!;
+        string domain = configuration["HostingSettings:Domain"]!;
 
-        return $"{domain}{shortUrlPath}";
+        return $"https://{domain}/Url/nav/{shortUrlPath}";
     }
 }

@@ -1,0 +1,60 @@
+<div class="container">
+    <section class="text-center py-4 my-5 greeting rounded">
+        <h1 class="display-4 fw-bold">URL Shortener</h1>
+    </section>
+
+    <section class="custom-form bg-light p-4 rounded-lg shadow" *ngIf="authService.isAuthenticated()">
+        <div class="container">
+            <form class="row g-3 align-items-center">
+                <div class="col">
+                    <input type="text" class="form-control form-control-lg border-primary" placeholder="Paste your link right here!" #link
+                        [(ngModel)]="urlInput" name="urlInput">
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary btn-lg" type="button" (click)="addNewUrl()">Shorten It!</button>
+                </div>
+            </form>
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+        </div>
+        <div *ngIf="successMessage" class="alert alert-success mt-3">
+            <i class="fas fa-check-circle"></i> {{ successMessage }}
+        </div>
+    </section>
+    
+    <section class="results mt-5">
+        <div *ngIf="urlsList && urlsList.length > 0; else noUrls">
+            <table class="table table-hover table-bordered table-sm">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="text-center">Details</th>
+                        <th class="text-center">Full URL</th>
+                        <th class="text-center">Short URL</th>
+                        <th class="text-center">Created Date</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let url of urlsList">
+                        <td class="text-center"><a [routerLink]="['/url-details', url.id]" class="btn btn-sm btn-outline-info">Learn More</a></td>
+                        <td class="text-truncate" style="max-width: 200px;">
+                            <a [href]="url.fullUrl" target="_blank" rel="noopener noreferrer" class="text-primary">{{ url.fullUrl }}</a>
+                        </td>
+                        <td>
+                            <a [href]="url.shortUrl" target="_blank" rel="noopener noreferrer" class="text-primary">{{ url.shortUrl }}</a>
+                        </td>
+                        <td>{{ url.createdDate | date: 'd MMM yyyy' }}</td>
+                        <td class="text-center"><button class="btn btn-outline-danger btn-sm" (click)="deleteUrl(url.id)">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #noUrls>
+            <div class="text-center py-5">
+                <p class="lead">Your shortened URLs will appear here.</p>
+                <p>Start by entering a URL above and clicking "Shorten It!"</p>
+            </div>
+        </ng-template>
+    </section>
+</div>

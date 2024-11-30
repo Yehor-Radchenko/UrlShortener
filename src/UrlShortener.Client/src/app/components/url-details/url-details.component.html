@@ -1,0 +1,40 @@
+<div class="container mt-5" *ngIf="url">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">URL Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h5 class="text-muted">Full URL</h5>
+                    <p class="text-break"><a [href]="url.fullUrl" target="_blank" rel="noopener noreferrer">{{ url.fullUrl }}</a></p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h5 class="text-muted">Short URL</h5>
+                    <p><a [href]="url.shortUrl" target="_blank" rel="noopener noreferrer">{{ url.shortUrl }}</a></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <h5 class="text-muted">Created Date</h5>
+                    <p>{{ url.createdDate | date: 'dd MMM yyyy' }}</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5 class="text-muted">Last Appeal</h5>
+                    <p>{{ url.lastAppeal ? (url.lastAppeal | date: 'dd MMM yyyy') : 'N/A' }}</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5 class="text-muted">Number of Appeals</h5>
+                    <p>{{ url.numberOfAppeals }}</p>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5 class="text-muted">User ID</h5>
+                    <p>{{ url.userId }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">URL ID: {{ url.id }}</small>
+        </div>
+    </div>
+</div>

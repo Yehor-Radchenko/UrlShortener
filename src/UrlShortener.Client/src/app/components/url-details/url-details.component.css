@@ -1,0 +1,44 @@
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #4a90e2;
+    padding: 1.5rem;
+}
+
+.card-header h2 {
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+h5.text-muted {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 1rem 2rem;
+}
