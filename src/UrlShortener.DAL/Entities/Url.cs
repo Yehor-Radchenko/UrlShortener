@@ -18,7 +18,7 @@ public class Url : IEntity
     [Required]
     public DateTime CreatedDate { get; set; }
 
-    public DateTime? LastAppeal { get; set; }
+    public DateTime? LastAppeal { get; set; } = null!;
 
     [DefaultValue(0)]
     public int NumberOfAppeals { get; set; }

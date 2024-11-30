@@ -13,8 +13,8 @@ public class UrlController(
     IUrlService urlService,
     UserManager<User> userManager) : ControllerBase
 {
-    [HttpGet("getUrls")]
-    [Authorize]
+    [HttpGet()]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> GetAllUrls()
     {
         var urls = await urlService.GetAllAsync(int.Parse(userManager.GetUserId(User)!));
@@ -22,31 +22,31 @@ public class UrlController(
     }
 
     [HttpGet("{id}")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> GetUrlById([FromRoute] int id)
     {
         return Ok(await urlService.GetByIdAsync(id, int.Parse(userManager.GetUserId(User)!)));
     }
 
     [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> CreateUrl(CreateUrlShortenerRequest url)
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<IActionResult> CreateUrl([FromBody] CreateUrlShortenerRequest url)
     {
         var shortUrl = await urlService.AddAsync(url, int.Parse(userManager.GetUserId(User)!));
         return Ok(new { shortUrl = shortUrl });
     }
 
     [HttpPut]
-    [Authorize]
-    public async Task<IActionResult> UpdateUrl(UpdateUrlShortenerRequest url)
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<IActionResult> UpdateUrl([FromBody] UpdateUrlShortenerRequest url)
     {
         await urlService.UpdateAsync(url, int.Parse(userManager.GetUserId(User)!));
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    [Authorize]
-    public async Task<IActionResult> UpdateUrl([FromRoute] int id)
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<IActionResult> DeleteUrl([FromRoute] int id)
     {
         await urlService.DeleteAsync(id, int.Parse(userManager.GetUserId(User)!));
         return NoContent();
@@ -56,7 +56,7 @@ public class UrlController(
     public async Task<RedirectResult> GetUrl([FromRoute] string shortedUrl)
     {
         var fullUrl = await urlService.GetByShortedUrlAsync(shortedUrl, int.Parse(userManager.GetUserId(User)!));
-
-        return new RedirectResult(fullUrl.FullUrl);
+        await urlService.UpdateUrlAppealData(fullUrl.Id);
+        return Redirect(fullUrl.FullUrl);
     }
 }

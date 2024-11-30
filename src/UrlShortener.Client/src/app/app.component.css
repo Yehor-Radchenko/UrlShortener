@@ -1,0 +1,44 @@
+.navbar {
+    padding: 0.8rem 1rem;
+  }
+  
+  .navbar-brand {
+    font-weight: 700;
+    color: #4a90e2;
+  }
+  
+  .brand-text {
+    font-size: 1.4rem;
+  }
+  
+  .nav-link {
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover, .nav-link.active {
+    color: #4a90e2;
+  }
+  
+  .navbar-nav .nav-item {
+    margin-left: 1rem;
+  }
+  
+  .btn-outline-primary {
+    color: #4a90e2;
+    border-color: #4a90e2;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #4a90e2;
+    color: white;
+  }
+  
+  @media (max-width: 767.98px) {
+    .navbar-nav .nav-item {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+  }
