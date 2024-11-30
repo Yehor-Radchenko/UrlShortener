@@ -11,7 +11,7 @@ public class AccountService(
     UserManager<User> userManager,
     SignInManager<User> signInManager,
     IMapper mapper,
-    JwtService jwtService) : IAccountService
+    IJwtService jwtService) : IAccountService
 {
     public async Task<int> RegisterUser(CreateUserRequest model)
     {

@@ -17,8 +17,8 @@ public static class ServiceCollectionExtention
 
         services.AddScoped<IUrlService, UrlService>();
         services.AddScoped<IAccountService, AccountService>();
-        services.AddScoped<JwtService>();
-        services.AddScoped<UrlCastService>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IUrlCastService, UrlCastService>();
         services.ConfigureAuthentication(configuration);
 
         return services;
